@@ -1,0 +1,46 @@
+name: remote_desktop_app
+description: 跨平台远程桌面应用，支持 iOS 和 Android
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  cupertino_icons: ^1.0.6
+  material_color_utilities: ^0.8.0
+
+  # 网络/连接
+  flutter_vnc: ^0.1.0          # VNC 协议支持
+  dartssh2: ^2.9.0              # SSH 隧道
+  web_socket_channel: ^2.4.0   # WebSocket
+  http: ^1.1.0
+
+  # 状态管理
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
+
+  # 安全
+  flutter_secure_storage: ^9.0.0
+  local_auth: ^2.1.8            # 指纹/FaceID
+
+  # UI 组件
+  flutter_slidable: ^3.0.1
+  cached_network_image: ^3.3.1
+  shimmer: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.7
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/
+    - assets/images/
