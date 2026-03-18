@@ -3,7 +3,7 @@ name: Build & Release APK
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:  # 支持手动触发
+  workflow_dispatch:
 
 jobs:
   build-apk:
@@ -29,17 +29,22 @@ jobs:
       - name: 安装依赖
         run: flutter pub get
 
-      - name: 构建 Debug APK
-        run: flutter build apk --debug --target-platform android-arm64
+      - name: 静态分析（非阻塞）
+        run: flutter analyze --no-fatal-infos
+        continue-on-error: true
 
-      - name: 列出产物（调试）
-        run: find build/app/outputs -name "*.apk" 2>/dev/null || echo "未找到APK"
+      - name: 构建 Debug APK（详细日志）
+        run: flutter build apk --debug --verbose 2>&1 | tail -100
+
+      - name: 列出产物
+        if: always()
+        run: find build/app/outputs -name "*.apk" 2>/dev/null && echo "✅ APK存在" || echo "❌ 未找到APK"
 
       - name: 重命名 APK
         run: |
           mkdir -p release-apk
           cp build/app/outputs/flutter-apk/app-debug.apk \
-             release-apk/RemoteDesktop-$(date +%Y%m%d-%H%M)-debug.apk
+             "release-apk/RemoteDesktop-$(date +%Y%m%d-%H%M)-debug.apk"
 
       - name: 上传 APK（Artifact）
         uses: actions/upload-artifact@v4
@@ -48,14 +53,13 @@ jobs:
           path: release-apk/*.apk
           retention-days: 30
 
-      - name: 创建/更新 Latest Release
+      - name: 发布到 GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: "Latest Build"
           body: |
             🤖 自动构建 APK
-            
             **构建时间**: ${{ github.event.head_commit.timestamp }}
             **提交**: ${{ github.sha }}
             
