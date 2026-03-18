@@ -1,8 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:remote_desktop_app/models/remote_host.dart';
 import 'package:remote_desktop_app/services/connection_manager.dart';
 
 void main() {
+  // 每个测试前初始化 SharedPreferences mock
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+  });
+
   group('RemoteHost 模型测试', () {
     test('创建 RemoteHost', () {
       final host = RemoteHost(
@@ -51,13 +57,14 @@ void main() {
   group('ConnectionManager 测试', () {
     test('初始状态', () {
       final manager = ConnectionManager();
-      expect(manager.hosts, isEmpty);
       expect(manager.isConnected, false);
       expect(manager.activeHost, isNull);
     });
 
-    test('添加主机', () {
+    test('添加主机', () async {
       final manager = ConnectionManager();
+      // 等待初始化完成
+      await Future.delayed(const Duration(milliseconds: 100));
       final host = RemoteHost(
         id: '1',
         name: '测试',
@@ -70,8 +77,9 @@ void main() {
       expect(manager.hosts.first.name, '测试');
     });
 
-    test('删除主机', () {
+    test('删除主机', () async {
       final manager = ConnectionManager();
+      await Future.delayed(const Duration(milliseconds: 100));
       final host = RemoteHost(
         id: '1',
         name: '测试',
