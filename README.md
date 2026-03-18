@@ -92,3 +92,4 @@ flutter build appbundle --release
 ## 📄 License
 
 MIT License
+<!-- build trigger: Wed Mar 18 01:38:25 PM CST 2026 -->
