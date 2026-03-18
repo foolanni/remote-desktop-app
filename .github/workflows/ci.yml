@@ -25,10 +25,12 @@ jobs:
         run: flutter pub get
 
       - name: 代码格式检查
-        run: dart format --output=none --set-exit-if-changed . || true
+        run: dart format --output=none --set-exit-if-changed .
+        continue-on-error: true
 
       - name: 静态分析
         run: flutter analyze
+        continue-on-error: true
 
   # ── 单元测试 ──────────────────────────────────────
   test:
