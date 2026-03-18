@@ -15,7 +15,7 @@ dependencies:
 
   # 网络/连接
   dartssh2: ^2.9.0              # SSH 隧道 + SFTP
-  web_socket_channel: ^3.0.1   # WebSocket
+  web_socket_channel: ^2.4.0   # WebSocket (PUNK 中继)
   http: ^1.2.2
 
   # 状态管理
