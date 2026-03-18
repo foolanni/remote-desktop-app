@@ -15,24 +15,24 @@ dependencies:
 
   # 网络/连接
   dartssh2: ^2.9.0              # SSH 隧道 + SFTP
-  web_socket_channel: ^3.0.1   # WebSocket
-  http: ^1.2.2
+  web_socket_channel: ^2.4.0   # WebSocket (PUNK 中继)
+  http: ^1.1.0
 
   # 状态管理
-  provider: ^6.1.2
-  shared_preferences: ^2.3.3
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
 
   # 安全存储
-  flutter_secure_storage: ^9.2.2
-  local_auth: ^2.3.0            # 指纹/FaceID
+  flutter_secure_storage: ^9.0.0
+  local_auth: ^2.1.8            # 指纹/FaceID
 
   # UI 组件
-  flutter_slidable: ^3.1.1
+  flutter_slidable: ^3.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
