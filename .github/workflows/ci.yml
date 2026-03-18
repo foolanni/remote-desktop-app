@@ -29,22 +29,26 @@ jobs:
       - name: 安装依赖
         run: flutter pub get
 
-      - name: 静态分析（非阻塞）
-        run: flutter analyze --no-fatal-infos
-        continue-on-error: true
+      - name: 构建 Debug APK
+        run: flutter build apk --debug
 
-      - name: 构建 Debug APK（详细日志）
-        run: flutter build apk --debug --verbose 2>&1 | tail -100
-
-      - name: 列出产物
+      - name: 查找所有产物
         if: always()
-        run: find build/app/outputs -name "*.apk" 2>/dev/null && echo "✅ APK存在" || echo "❌ 未找到APK"
+        run: |
+          echo "=== build 目录结构 ==="
+          find build -name "*.apk" 2>/dev/null || echo "无APK"
+          echo "=== flutter-apk 目录 ==="
+          ls -la build/app/outputs/flutter-apk/ 2>/dev/null || echo "目录不存在"
+          echo "=== apk 目录 ==="
+          ls -la build/app/outputs/apk/ 2>/dev/null || echo "目录不存在"
 
-      - name: 重命名 APK
+      - name: 复制并上传 APK
         run: |
           mkdir -p release-apk
-          cp build/app/outputs/flutter-apk/app-debug.apk \
-             "release-apk/RemoteDesktop-$(date +%Y%m%d-%H%M)-debug.apk"
+          # 兼容不同路径
+          APK=$(find build -name "*.apk" | head -1)
+          echo "找到APK: $APK"
+          cp "$APK" "release-apk/RemoteDesktop-debug.apk"
 
       - name: 上传 APK（Artifact）
         uses: actions/upload-artifact@v4
